@@ -4,6 +4,7 @@ var config;
     var Scene = (function () {
         function Scene() {
         }
+        Scene.loadingScene = -1;
         Scene.MENU = 0;
         Scene.TUTORIAL = 1;
         Scene.gameScene1 = 2;

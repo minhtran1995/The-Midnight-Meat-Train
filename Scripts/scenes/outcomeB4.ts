@@ -15,6 +15,7 @@ module scenes {
         
         // Start Method
         public start(): void {
+            
 
             //Add background picture
             this._mainBG = new createjs.Bitmap(assets.getResult("outcomeB4"));

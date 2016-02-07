@@ -2,6 +2,7 @@
 
     // Scene Constants
     export class Scene {
+        public static loadingScene:number = -1;
         public static MENU: number = 0;
         public static TUTORIAL: number = 1;
         public static gameScene1: number = 2;

@@ -19,6 +19,7 @@ var stats;
 var currentScene;
 var scene;
 // Game Scenes
+var loadingScene;
 var menu;
 var tut;
 var gameScene1;
@@ -86,25 +87,19 @@ var assetData = [
     { id: "trainBell", src: "../../Assets/Sound/trainBell.mp3" }
 ];
 function preLoad() {
+    scene = config.Scene.loadingScene;
+    changeScene();
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
-    assets.on("complete", init, this);
+    assets.on("complete", initialScene, this);
     assets.loadManifest(assetData);
 }
+function initialScene() {
+    // set initial scene
+    scene = config.Scene.MENU;
+    changeScene();
+}
 function init() {
-    //Set up BMG
-    /*bmg = new Audio('../../Assets/Sound/bmg.mp3');
-    bmg.loop = true;
-    bmg.volume = 0.7;
-    bmg.play();
-
-    sound = new Audio('../../Assets/Sound/trainBell.wma')
-    sound.loop = true;
-    sound.volume = 0.1;
-    sound.play();*/
-    //Sound Preloaded    
-    createjs.Sound.play("BMG");
-    createjs.Sound.play("trainBell", 0, 0, 0, -1, 0.1, 0);
     // create a reference the HTML canvas Element
     canvas = document.getElementById("canvas");
     // create our main display list container
@@ -117,9 +112,10 @@ function init() {
     createjs.Ticker.on("tick", gameLoop, this);
     // sets up our stats counting workflow
     setupStats();
-    // set initial scene
-    scene = config.Scene.MENU;
-    changeScene();
+    preLoad();
+    //Sound Preloaded    
+    //createjs.Sound.play("BMG");
+    //createjs.Sound.play("trainBell", 0, 0, 0, -1, 0.1, 0);
 }
 // Main Game Loop function that handles what happens each "tick" or frame
 function gameLoop(event) {
@@ -146,13 +142,19 @@ function changeScene() {
     stage.removeAllChildren();
     // Launch various scenes
     switch (scene) {
+        case config.Scene.loadingScene:
+            // show the Tutorial scene            
+            loadingScene = new scenes.loadingScene();
+            currentScene = loadingScene;
+            break;
         case config.Scene.MENU:
             // show the MENU scene            
             menu = new scenes.Menu();
             currentScene = menu;
-            //Play BMG on menu
-            createjs.Sound.play("BMG");
-            createjs.Sound.play("trainBell", 0, 0, 0, -1, 0.1, 0);
+            //Play BMG on menu       
+            createjs.Sound.stop();
+            createjs.Sound.play("BMG", 0, 0, 0, -1, 0.7, -1);
+            createjs.Sound.play("trainBell", 0, 0, 0, -1, 0.1, -1);
             break;
         case config.Scene.TUTORIAL:
             // show the Tutorial scene            
@@ -206,10 +208,7 @@ function changeScene() {
             currentScene = outcomeB4;
             //This is happy ending scene
             //There is no Horror anymore
-            bmg.pause();
-            bmg.currentTime = 0;
-            sound.pause();
-            sound.currentTime = 0;
+            createjs.Sound.stop();
             break;
         case config.Scene.decisionC:
             // show the third decision scene            
