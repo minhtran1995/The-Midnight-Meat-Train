@@ -151,8 +151,8 @@ function changeScene() {
             menu = new scenes.Menu();
             currentScene = menu;
             //Play BMG on menu
-            bmg.play();
-            sound.play();
+            createjs.Sound.play("BMG");
+            createjs.Sound.play("trainBell", 0, 0, 0, -1, 0.1, 0);
             break;
         case config.Scene.TUTORIAL:
             // show the Tutorial scene            
